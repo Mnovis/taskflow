@@ -5,9 +5,11 @@ interface AuthState {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
+  isRestoring: boolean
   setSession: (user: User, accessToken: string) => void;
   setAccessToken: (accessToken: string) => void;
   clearSession: () => void;
+  finishRestoring: () => void;
 }
 
 // Guarda apenas o access token em memória (nunca em localStorage) —
@@ -18,10 +20,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
   isAuthenticated: false,
+  isRestoring: true,
 
   setSession: (user, accessToken) => set({ user, accessToken, isAuthenticated: true }),
 
   setAccessToken: (accessToken) => set({ accessToken, isAuthenticated: true }),
 
   clearSession: () => set({ user: null, accessToken: null, isAuthenticated: false }),
+
+  finishRestoring: () => set({ isRestoring: false }),
 }));
