@@ -5,10 +5,15 @@ import { env } from "../config/env";
 const REFRESH_COOKIE = "refreshToken";
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
+  // Em produção, frontend e backend normalmente vivem em domínios
+  // diferentes (ex: vercel.app e onrender.com). Cookies "cross-site"
+  // só são enviados pelo navegador com SameSite=None — e SameSite=None
+  // exige Secure=true (HTTPS) por especificação. Em dev, ambos rodam
+  // em localhost (mesma "site"), então Lax funciona normalmente.
   secure: env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  sameSite: env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 dias
-  path: "/api/auth", // cookie só é enviado para rotas de auth (refresh/logout)
+  path: "/api/auth",
 };
 
 export const authController = {
