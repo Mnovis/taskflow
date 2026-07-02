@@ -2,8 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { clsx } from "clsx";
 import { CalendarDays, UserCircle2 } from "lucide-react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { formatDueDate } from "@/lib/date";
 import { PriorityBadge } from "@/components/ui/PriorityBadge";
 import type { Card as CardType } from "@/types";
 
@@ -44,7 +43,7 @@ export function Card({ card, onClick }: CardProps) {
         {card.dueDate && (
           <span className="flex items-center gap-1 text-xs text-slate-500">
             <CalendarDays className="h-3.5 w-3.5" />
-            {format(new Date(card.dueDate), "d MMM", { locale: ptBR })}
+            {formatDueDate(card.dueDate)}
           </span>
         )}
       </div>
